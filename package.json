@@ -1,0 +1,25 @@
+{
+  "name": "json-csv-convertor",
+  "version": "1.0.0",
+  "description": "converts JSON arrays to CSV strings that can then be used to save of FS or elsewhere",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./index.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mim-Armand/json-csv.git"
+  },
+  "keywords": [
+    "csv",
+    "excel",
+    "json",
+    "convertor"
+  ],
+  "author": "mim Armand",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mim-Armand/json-csv/issues"
+  },
+  "homepage": "https://github.com/mim-Armand/json-csv#readme"
+}

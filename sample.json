@@ -1,0 +1,28 @@
+[
+  {
+    "field1": "value 1",
+    "field2": "value 2",
+    "field3": "value 3"
+  },
+  {
+    "field1": "value 4",
+    "field3": "value 5"
+  },
+  {
+    "field1": "value 1",
+    "field2": "value 2",
+    "field4": 1111
+  },
+  {
+    "field1": "value 11",
+    "field2": "value 22",
+    "field3": "value 33",
+    "field4": 2222
+  },
+  {
+    "field3": {"test":  "test", "f2": 33}
+  },
+  {
+    "field4": ["test 1", "test 2", "test 3"]
+  }
+]
