@@ -105,3 +105,4 @@ dist
 
 # Intellijerk
 .idea
+*.iml

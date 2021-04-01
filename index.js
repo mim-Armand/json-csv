@@ -1,6 +1,6 @@
 const replaceAll = (string, search, replace) => {
   return string.split(search).join(replace);
-}
+};
 
 const convert = (sourceJson) => {
   if (!sourceJson.length) throw new Error('Currently only JSON arrays are supported...');
@@ -16,11 +16,14 @@ const convert = (sourceJson) => {
       }
       const currId = headersObj[k];
       if (Array.isArray(v)) {
+        v = v.map( item => (typeof item === "object") ? JSON.stringify(item) : item);
         currentRow[currId] = `"${v.join(',')}"`
       } else if (typeof v === "object") {
         const v1 = replaceAll(JSON.stringify(v), '"', "'");
         const v2 = replaceAll(v1, ',', "-");
         currentRow[currId] = `"${v2}"`;
+      } else if(typeof v === 'string'){
+        currentRow[currId] = v.replace(/(?:\r\n|\r|\n)/g, '\\n');
       } else {
         currentRow[currId] = v;
       }
@@ -28,6 +31,6 @@ const convert = (sourceJson) => {
     valuesArr[row] = currentRow.join(',');
   });
   return headersArr.join(',') + '\n' + valuesArr.join('\n');
-}
+};
 
 exports.convert = convert;
