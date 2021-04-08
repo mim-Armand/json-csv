@@ -6,15 +6,18 @@ const escapeObject = (obj) => {
   const v0 = JSON.stringify( obj );
   const v1 = replaceAll( v0, '"', "'");
   const v2 = replaceAll( v1, ',', " - ");
-  v2.replace(/(?:\r\n|\r|\n)/g, '\\n');
-  return `${v2}`;
+  v2.replace(/(?:\r\n|\r|\n)/g, ' ⏎ ');
+  const v3 = replaceAll(v2, '\n', " ⏎ ");
+  return `${v3}`;
 };
 
 const escapeString = (str) => {
-  str.replace(/(?:\r\n|\r|\n)/g, '\\n');
+  str.replace(/(?:\r\n|\r|\n)/g, ' ⏎ ');
+  str = replaceAll(str, '\n', " ⏎ ");
   str = replaceAll(str, '"', "'");
+  str = replaceAll(str, ',', " - ");
   // str.replaceAll(',', '-');
-  return `"${str}"`;
+  return str;
 };
 
 const convert = (sourceJson) => {
@@ -31,12 +34,16 @@ const convert = (sourceJson) => {
       }
       const currId = headersObj[k];
       if (Array.isArray(v)) {
-        v = v.map( item => (typeof item === "object") ? escapeObject(item) : item);
+        v = v.map( item => {
+          if(typeof item === "object") return escapeObject(item);
+          if(typeof item === "string") return escapeString(item);
+          return item;
+        });
         currentRow[currId] = `"${v.join(',')}"`
       } else if (typeof v === "object") {
         currentRow[currId] = `"${escapeObject(v)}"`;
       } else if(typeof v === 'string'){
-        currentRow[currId] = escapeString(v);
+        currentRow[currId] = `${escapeString(v)}`;
       } else {
         currentRow[currId] = v;
       }
