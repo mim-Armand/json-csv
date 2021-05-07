@@ -1,27 +1,19 @@
-const replaceAll = (string, search, replace) => {
-  return string.split(search).join(replace);
-};
+require("replaceall-shim");
 
 const escapeObject = (obj) => {
-  const v0 = JSON.stringify( obj );
-  const v1 = replaceAll( v0, '"', "'");
-  const v2 = replaceAll( v1, ',', " - ");
-  v2.replace(/(?:\r\n|\r|\n)/g, ' ⏎ ');
-  const v3 = replaceAll(v2, '\n', " ⏎ ");
-  return `${v3}`;
+  if(obj === null || obj === undefined) return "";
+  let str = JSON.stringify( obj );
+  str = str.replaceAll('"', "'");
+  return `${str}`;
 };
 
 const escapeString = (str) => {
-  str.replace(/(?:\r\n|\r|\n)/g, ' ⏎ ');
-  str = replaceAll(str, '\n', " ⏎ ");
-  str = replaceAll(str, '"', "'");
-  str = replaceAll(str, ',', " - ");
-  // str.replaceAll(',', '-');
-  return str;
+  str = str.replaceAll('"', "'");
+  return `"${str}"`;
 };
 
 const convert = (sourceJson) => {
-  if (!sourceJson.length) throw new Error('Currently only JSON arrays are supported...');
+  if (!Array.isArray(sourceJson) || !sourceJson.length) throw new Error('Currently only JSON arrays are supported...');
   let headersObj = {};
   let headersArr = [];
   let valuesArr = [];
@@ -36,16 +28,16 @@ const convert = (sourceJson) => {
       if (Array.isArray(v)) {
         v = v.map( item => {
           if(typeof item === "object") return escapeObject(item);
-          if(typeof item === "string") return escapeString(item);
+          if(typeof item === "string") return escapeString(item).replaceAll('"', "'");
           return item;
         });
         currentRow[currId] = `"${v.join(',')}"`
       } else if (typeof v === "object") {
         currentRow[currId] = `"${escapeObject(v)}"`;
       } else if(typeof v === 'string'){
-        currentRow[currId] = `${escapeString(v)}`;
+        currentRow[currId] = escapeString(v);
       } else {
-        currentRow[currId] = v;
+        currentRow[currId] = `"${v}"`;
       }
     });
     valuesArr[row] = currentRow.join(',');
